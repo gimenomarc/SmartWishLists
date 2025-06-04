@@ -1,26 +1,26 @@
 import React, { useState } from 'react';
 import { Home, Gift, Plus, Settings, LogOut, Menu, X, Sparkles, TrendingUp, Calendar, Users } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
-// Componente Sidebar
 const Sidebar = ({ isOpen, setIsOpen }) => {
+  const navigate = useNavigate();
+
   const menuItems = [
-    { icon: Home, label: 'Dashboard', active: true },
-    { icon: Gift, label: 'Mis Listas' },
-    { icon: Plus, label: 'Crear Lista' },
-    { icon: Settings, label: 'Configuración' },
+    { icon: Home, label: 'Dashboard', path: '/' },
+    { icon: Gift, label: 'Mis Listas', path: '/my-lists' },
+    { icon: Plus, label: 'Crear Lista', path: '/create-list' },
+    { icon: Settings, label: 'Configuración', path: '/settings' },
   ];
 
   return (
     <>
-      {/* Overlay móvil */}
       {isOpen && (
         <div 
           className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden"
           onClick={() => setIsOpen(false)}
         />
       )}
-      
-      {/* Sidebar */}
+
       <aside className={`
         fixed top-0 left-0 h-full w-64 bg-gray-900/80 backdrop-blur-xl border-r border-gray-800
         transform transition-transform duration-300 ease-in-out z-50
@@ -47,17 +47,18 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
             </div>
           </div>
 
-          {/* Menu items */}
+          {/* Menu */}
           <nav className="flex-1 px-4 py-6 space-y-2">
             {menuItems.map((item, index) => (
               <button
                 key={index}
+                onClick={() => {
+                  navigate(item.path);
+                  setIsOpen(false);
+                }}
                 className={`
                   w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200
-                  ${item.active 
-                    ? 'bg-gradient-to-r from-purple-600/20 to-pink-600/20 text-white border border-purple-500/30' 
-                    : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
-                  }
+                  text-gray-400 hover:text-white hover:bg-gray-800/50
                 `}
               >
                 <item.icon className="w-5 h-5" />
@@ -66,7 +67,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
             ))}
           </nav>
 
-          {/* Logout */}
+          {/* Logout (puedes conectar el logout real si quieres) */}
           <div className="p-4 border-t border-gray-800">
             <button className="w-full flex items-center space-x-3 px-4 py-3 text-gray-400 hover:text-white hover:bg-gray-800/50 rounded-xl transition-all duration-200">
               <LogOut className="w-5 h-5" />
